@@ -56,6 +56,11 @@ height: 300px;
 height: 250px;
 }
  
+#ordersByCity {
+    height: 250px;
+    width: 50%;
+}
+
 /* Clearfix for floating elements */
 .chart-row::after {
 content: "";

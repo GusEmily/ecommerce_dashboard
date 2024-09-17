@@ -241,6 +241,42 @@ def payment_method_popularity() -> Response:
     counts = [row[1] for row in result]
     return jsonify({"methods": methods, "counts": counts})
 
+# API end point created/route registered in Flask to handle requsts to "/api/best_product_revenue"
+@app.route("/api/best_product_revenue")
+# Define the endpoint function that returns a Flask Response object
+def best_product_revenue() -> Response: 
+    query = """
+    SELECT p.product_name, SUM(od.price_at_time * od.quantity_ordered) AS total_revenue
+    FROM order_details od 
+    JOIN products p ON od.product_id = p.product_id
+    GROUP BY p.product_name
+    ORDER BY total_revenue DESC
+    LIMIT 5;
+    """
+    result = query_db(query)
+
+    products = [row[0] for row in result]
+    revenue = [row[1] for row in result]
+    return jsonify({"products": products, "revenue": revenue})
+
+# API end point created/route registered in Flask to handle requsts to "/api/orders_by_city"
+@app.route("/api/orders_by_city")
+# Define the endpoint function that returns a Flask Response object
+def orders_by_city() -> Response: 
+    query = """
+    SELECT a.city, COUNT(o.order_id) AS total_orders
+    FROM orders o 
+    JOIN addresses a ON o.user_id = a.user_id
+    GROUP BY a.city
+    ORDER BY total_orders DESC
+    LIMIT 5;
+    """
+    result = query_db(query)
+
+    city = [row[0] for row in result]
+    total_orders = [row[1] for row in result]
+    return jsonify({"city": city, "total orders": total_orders})
+
 # TODO: Add a dropdown to the dashboard to select a product category
 
 #running the application. Launch our Flask app server, making it live and ready to respond to incoming API requests

@@ -131,6 +131,68 @@ fetchDataAndRenderChart("/api/payment_method_popularity", "paymentMethodChart", 
     },
     // ... other options
   }));
+
+  // Best Product by Revenue Chart 7
+fetchDataAndRenderChart("/api/best_product_revenue", "bestProductRevenue", (data) => ({
+  type: "bar",
+  data: {
+    labels: data.products,
+    datasets: [
+      {
+        label: "Total Revenue per Product",
+        data: data.revenue,
+        // ... other config
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+      x: {
+        display: true, 
+      },
+    },
+  },
+}));
+
+
+// Cities With Most Orders Chart 8
+fetchDataAndRenderChart("/api/orders_by_city", "ordersByCity", (data) => ({
+  type: "doughnut",
+  data: {
+     labels: data.city,
+     datasets: [
+        {
+         label: "Total Orders",
+         data: data.total_orders,
+         backgroundColor: [
+          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+        ], 
+        hoverBackgroundColor: [
+          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+        ],
+        borderWidth: 1,
+       },
+     ],
+   },
+   options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,  // Show legend for the chart
+        position: 'top',  // Position of the legend
+      },
+      tooltip: {
+        enabled: true,  // Show tooltips on hover
+      },
+    },
+    cutout: '70%',
+   },
+ }));
+
   
   // Temperature Over Time Chart
   // fetchDataAndRenderChart(

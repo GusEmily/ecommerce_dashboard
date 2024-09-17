@@ -4,7 +4,7 @@ This script uses the sqlite3 module to interact with an SQLite database.
 import sqlite3
 import pathlib
 import logging
-import requests
+# import requests
 from flask import Flask, jsonify, render_template, Response, make_response, abort
 """
 This module sets up a Flask web application and provides endpoints for rendering
@@ -13,7 +13,6 @@ templates and returning JSON responses.
 
 # Setup logging
 logging.basicConfig(filename="app.log", level=logging.DEBUG)
-
 
 working_directory = pathlib.Path(__file__).parent.absolute()
 DATABASE = working_directory / 'CCL_ecommerce.db'
@@ -25,13 +24,8 @@ DATABASE = working_directory / 'CCL_ecommerce.db'
 def query_db(query: str, args=()) -> list:
     """
     Executes a SQL query on the database and returns the results.
-
-    Args:
-        query (str): The SQL query to execute.
-        args (tuple): Optional arguments for the SQL query.
-
-    Returns:
-        list: A list of results fetched from the database.
+    query (str): The SQL query to execute.
+    args (tuple): Optional arguments for the SQL query.
     """
     try:
         with sqlite3.connect(DATABASE)as conn:
@@ -66,6 +60,37 @@ def index() -> str:
         str: The rendered 'dashboard.html' template.
     """
     return render_template('dashboard.html')
+
+# External data 
+#@app.route("/api/temperature_over_time", methods=["GET"])
+#def temperature_over_time():
+    # Fetching the date range from orders_over_time
+#    query = """
+#SELECT MIN(order_date), MAX(order_date)
+#FROM orders;
+#"""
+#    try:
+ #       result = query_db(query)
+  #      start_date, end_date = result[0]
+
+        # Making an API call to fetch temperature data
+   #     API_ENDPOINT = "https://archive-api.open-meteo.com/v1/archive"
+    #    params = {
+     #       "latitude": 50.6053,  # London UK
+      #      "longitude": -3.5952,
+       #     "start_date": start_date,
+        #    "end_date": end_date,
+         #   "daily": "temperature_2m_max",
+          #  "timezone": "GMT",
+#        }
+#        response = requests.get(API_ENDPOINT, params=params)
+ #       response.raise_for_status()
+
+  #      return jsonify(response.json())
+   # except Exception as e:
+    #    logging.error("Error in /api/temperature_over_time: %s", e)
+     #   abort(500, description="Error fetching temperature data.")
+
 
 @app.route("/api/orders_over_time")
 def orders_over_time() -> Response:
@@ -149,7 +174,9 @@ def most_popular_products() -> Response:
     ]
     return jsonify(products)
 
+# API end point created/route registered in Flask to handle requsts to "/api/revenue_generation"
 @app.route("/api/revenue_generation")
+# Define the endpoint function that returns a Flask Response object
 def revenue_generation() -> Response:
     """
     Retrieves daily revenue totals from the database and returns them as a JSON response.
@@ -169,8 +196,9 @@ def revenue_generation() -> Response:
     revenues = [row[1] for row in result]
     return jsonify({"dates": dates, "revenues": revenues})
 
-
+# API end point created/route registered in Flask to handle requsts to "/api/product_category_popularity"
 @app.route("/api/product_category_popularity")
+# Define the endpoint function that returns a Flask Response object
 def product_category_popularity() -> Response:
     """
     Fetches total sales per product category from the database.
@@ -191,8 +219,9 @@ def product_category_popularity() -> Response:
     sales = [row[1] for row in result]
     return jsonify({"categories": categories, "sales": sales})
 
-
+# API end point created/route registered in Flask to handle requsts to "/api/payment_method_popularity"
 @app.route("/api/payment_method_popularity")
+# Define the endpoint function that returns a Flask Response object
 def payment_method_popularity() -> Response:
     """
     Fetches the most popular payment methods based on count of payment ids per method_name.
@@ -208,7 +237,9 @@ def payment_method_popularity() -> Response:
     ORDER BY transaction_count DESC;
     """
     result = query_db(query)
-
+    methods = [row[0] for row in result]
+    counts = [row[1] for row in result]
+    return jsonify({"methods": methods, "counts": counts})
 
 # TODO: Add a dropdown to the dashboard to select a product category
 

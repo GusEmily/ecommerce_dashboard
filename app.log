@@ -1,0 +1,47 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:25] "[36mGET /static/dashboard_stylesheet.css HTTP/1.1[0m" 304 -
+ERROR:root:Database error: near "SELECTX": syntax error
+ERROR:root:Error in /api/orders_over_time: name 'abort' is not defined
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:25] "GET /api/low_stock_levels HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:25] "GET /api/most_popular_products HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:25] "[35m[1mGET /api/orders_over_time HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:09:25] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:10:08] "[36mGET /static/dashboard_stylesheet.css HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "[36mGET /static/dashboard_stylesheet.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "GET /api/orders_over_time HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "GET /api/low_stock_levels HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "GET /api/most_popular_products HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Sep/2024 21:23:16] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 772-410-041
+INFO:werkzeug: * Detected change in 'c:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\app.py', reloading
+INFO:werkzeug: * Restarting with stat

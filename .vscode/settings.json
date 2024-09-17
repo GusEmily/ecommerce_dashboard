@@ -1,9 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\venv\\Scripts\\python.exe>",
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.testing.pytestArgs": [
-        "venv"   
-    ]
+    "python.testing.pytestArgs": ["tests"]
 }
-    

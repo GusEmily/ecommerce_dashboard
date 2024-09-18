@@ -4,8 +4,9 @@ This script uses the sqlite3 module to interact with an SQLite database.
 import sqlite3
 import pathlib
 import logging
-# import requests
+import requests
 from flask import Flask, jsonify, render_template, Response, make_response, abort
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 """
 This module sets up a Flask web application and provides endpoints for rendering
 templates and returning JSON responses.
@@ -38,9 +39,11 @@ def query_db(query: str, args=()) -> list:
 
 
 app = Flask(__name__)  #creates an instance of the flask application. This instance is what we'll use to define routes and handle requests.
-
 #the name variable is a built-in Python variable, letting Flask know where to look for resources
 #the instance acts as a central controller, orchestrating the various functionalities of our web application
+
+# Suppress only the single InsecureRequestWarning from urllib3 when SSL verification is disabled
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -61,35 +64,50 @@ def index() -> str:
     """
     return render_template('dashboard.html')
 
-# External data 
-#@app.route("/api/temperature_over_time", methods=["GET"])
-#def temperature_over_time():
-    # Fetching the date range from orders_over_time
-#    query = """
-#SELECT MIN(order_date), MAX(order_date)
-#FROM orders;
-#"""
-#    try:
- #       result = query_db(query)
-  #      start_date, end_date = result[0]
+# External data
+@app.route("/api/temperature_over_time", methods=["GET"])
+def temperature_over_time():
+ # Fetching the date range from orders_over_time
+    query = """
+    SELECT MIN(order_date), MAX(order_date)
+    FROM orders;
+    """
+    try:
+        result = query_db(query)
+        start_date, end_date = result[0]
 
         # Making an API call to fetch temperature data
-   #     API_ENDPOINT = "https://archive-api.open-meteo.com/v1/archive"
-    #    params = {
-     #       "latitude": 50.6053,  # London UK
-      #      "longitude": -3.5952,
-       #     "start_date": start_date,
-        #    "end_date": end_date,
-         #   "daily": "temperature_2m_max",
-          #  "timezone": "GMT",
-#        }
-#        response = requests.get(API_ENDPOINT, params=params)
- #       response.raise_for_status()
+        API_ENDPOINT = "https://archive-api.open-meteo.com/v1/archive"
+        params = {
+            "latitude": 50.6053,  # London UK
+            "longitude": -3.5952,
+            "start_date": start_date,
+            "end_date": end_date,
+            "daily": "temperature_2m_max",
+            "timezone": "GMT",
+        }
+        #response = requests.get(API_ENDPOINT, params=params)
+        #response.raise_for_status()
 
-  #      return jsonify(response.json())
-   # except Exception as e:
-    #    logging.error("Error in /api/temperature_over_time: %s", e)
-     #   abort(500, description="Error fetching temperature data.")
+        # Log and inspect the response to ensure it contains the expected data
+        #logging.info("API response: %s", response.json())
+
+        # Check if the data has the expected structure
+        #if 'daily' not in response.json() or 'time' not in response.json()['daily']:
+        #    logging.error("Invalid response structure from Open-Meteo API")
+        #    abort(500, description="Error processing temperature data.")
+
+        # Disable SSL verification (for local testing only)
+        response = requests.get(API_ENDPOINT, params=params, verify=False)
+        response.raise_for_status()
+
+        # Return the API response as JSON
+        return jsonify(response.json())
+
+#        return jsonify(response.json())
+    except Exception as e:
+        logging.error("Error in /api/temperature_over_time: %s", e)
+        abort(500, description="Error fetching temperature data.")
 
 
 @app.route("/api/orders_over_time")
@@ -246,12 +264,11 @@ def payment_method_popularity() -> Response:
 # Define the endpoint function that returns a Flask Response object
 def best_product_revenue() -> Response: 
     query = """
-    SELECT p.product_name, SUM(od.price_at_time * od.quantity_ordered) AS total_revenue
+    SELECT p.product_name, SUM(od.price_at_time) AS total_revenue
     FROM order_details od 
     JOIN products p ON od.product_id = p.product_id
     GROUP BY p.product_name
-    ORDER BY total_revenue DESC
-    LIMIT 5;
+    ORDER BY total_revenue DESC;
     """
     result = query_db(query)
 
@@ -262,7 +279,10 @@ def best_product_revenue() -> Response:
 # API end point created/route registered in Flask to handle requsts to "/api/orders_by_city"
 @app.route("/api/orders_by_city")
 # Define the endpoint function that returns a Flask Response object
-def orders_by_city() -> Response: 
+def orders_by_city() -> Response:
+    """
+    Total orders per city 
+    """
     query = """
     SELECT a.city, COUNT(o.order_id) AS total_orders
     FROM orders o 
@@ -275,9 +295,28 @@ def orders_by_city() -> Response:
 
     city = [row[0] for row in result]
     total_orders = [row[1] for row in result]
-    return jsonify({"city": city, "total orders": total_orders})
+    return jsonify({"total_orders": total_orders, "city": city, })
 
-# TODO: Add a dropdown to the dashboard to select a product category
+# API end point created/route registered in Flask to handle requsts to "/api/total_products_bought_by_city"
+@app.route("/api/total_products_bought_by_city")
+# Define the endpoint function that returns a Flask Response object
+def total_products_bought_by_city() -> Response:
+    """
+    Total products purchased per city 
+    """
+    query = """
+    SELECT a.city, SUM(od.quantity_ordered) AS number_of_products_bought
+    FROM order_details od 
+    JOIN orders o ON od.order_id = o.order_id
+    JOIN addresses a ON o.user_id = a.user_id
+    GROUP BY a.city
+    ORDER BY number_of_products_bought DESC;
+    """
+    result = query_db(query)
+
+    city = [row[0] for row in result]
+    number_of_products_bought = [row[1] for row in result]
+    return jsonify({"number_of_products_bought": number_of_products_bought, "city": city, })
 
 #running the application. Launch our Flask app server, making it live and ready to respond to incoming API requests
 if __name__ == '__main__':

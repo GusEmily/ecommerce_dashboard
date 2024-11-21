@@ -2,4 +2,20 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": ["tests"]
+    ,
+    "sqlite.connections": [
+        {
+            "name": "MySQLiteDB", 
+            "database": "C:\\Users\\gueq2p\\OneDrive - BP\\Documents\\Coding\\DT6.1 Software Development\\VS Code Play\\ecommerce-dashboard\\CCL_ecommerce.db"
+        }
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "ecommerce database",
+            "database": "${workspaceFolder:ecommerce-dashboard}/CCL_ecommerce.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }
